@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const durationSelect = document.getElementById('duration');
     const sortSelect = document.getElementById('sort');
     const wardCards = document.querySelectorAll('.ward-card');
+    const modal = document.getElementById('propertyModal');
+    const modalContent = document.getElementById('modalContent');
+    const closeModal = document.querySelector('.close-modal');
 
     // Fetch properties data
     fetch('/properties_data.json')
@@ -82,12 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
             renderProperties(properties);
             setupFilters();
             setupWardCards();
+            updateWardCounts();
         })
         .catch(error => console.error('Error loading properties:', error));
 
     function renderProperties(properties) {
         propertyGrid.innerHTML = properties.map(property => `
-            <div class="property-card">
+            <div class="property-card" data-id="${property.id}">
                 <div class="property-image">
                     <img src="${property.image}" alt="${property.name}">
                     <div class="property-overlay"></div>
@@ -116,6 +120,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `).join('');
+
+        // Add click handlers to property cards
+        document.querySelectorAll('.property-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const propertyId = card.dataset.id;
+                const property = properties.find(p => p.id === propertyId);
+                showPropertyDetails(property);
+            });
+        });
+    }
+
+    function showPropertyDetails(property) {
+        modalContent.innerHTML = `
+            <div class="property-detail">
+                <div class="property-detail-image">
+                    <img src="${property.image}" alt="${property.name}">
+                </div>
+                <div class="property-detail-info">
+                    <h2>${property.name}</h2>
+                    <p class="property-location">${property.location}</p>
+                    <div class="property-detail-ratings">
+                        <span class="rating cultural-rating">Cultural Value: ${property.culturalValue}/100</span>
+                        <span class="rating artistic-rating">Artistic Value: ${property.artisticValue}/100</span>
+                    </div>
+                    <div class="property-info-grid">
+                        <div>
+                            <h4>Property Type</h4>
+                            <p>${property.type}</p>
+                        </div>
+                        <div>
+                            <h4>Size</h4>
+                            <p>${property.size}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Features</h4>
+                        <div class="property-detail-features">
+                            ${property.features.map(feature => 
+                                `<span class="feature-tag">${feature}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Pricing</h4>
+                        <p class="property-price">Nightly: ${property.price}</p>
+                        <p class="property-price">Weekly: ${calculateRate(property.price, 'weekly')}</p>
+                        <p class="property-price">Monthly: ${calculateRate(property.price, 'monthly')}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function updateWardCounts() {
+        wardCards.forEach(card => {
+            const ward = card.dataset.ward;
+            const count = properties.filter(p => p.ward === ward).length;
+            card.querySelector('.property-count').textContent = `${count} Properties`;
+        });
     }
 
     function calculateRate(price, duration) {
@@ -140,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return wardMatch && typeMatch;
                 });
 
-                // Sort properties
                 filteredProperties = sortProperties(filteredProperties, sortSelect.value);
                 renderProperties(filteredProperties);
             });
@@ -163,6 +227,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Close modal
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     function sortProperties(properties, sortType) {
         return [...properties].sort((a, b) => {
