@@ -66,24 +66,97 @@ function handlePropertyClick(event) {
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-    renderProperties();
-    
-    // Add click event listeners to property cards
-    const propertyGrid = document.querySelector('.property-grid');
-    if (propertyGrid) {
-        propertyGrid.addEventListener('click', handlePropertyClick);
-    }
-});
+    let properties = [];
+    const propertyGrid = document.getElementById('propertyGrid');
+    const durationSelect = document.getElementById('duration');
+    const locationSelect = document.getElementById('location');
+    const typeSelect = document.getElementById('type');
 
-// Smooth scroll for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
+    // Fetch properties data
+    fetch('/properties_data.json')
+        .then(response => response.json())
+        .then(data => {
+            properties = data.properties;
+            renderProperties(properties);
+            setupFilters();
+        })
+        .catch(error => console.error('Error loading properties:', error));
+
+    function renderProperties(properties) {
+        propertyGrid.innerHTML = properties.map(property => `
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="${property.image}" alt="${property.name}">
+                </div>
+                <div class="property-info">
+                    <h3>${property.name}</h3>
+                    <p class="property-location">${property.location}</p>
+                    <div class="property-features">
+                        <span>${property.size}</span>
+                        <span>${property.type}</span>
+                    </div>
+                    <div class="property-features">
+                        ${property.features.map(feature => `<span>${feature}</span>`).join('')}
+                    </div>
+                    <p class="property-price">${calculateRate(property.price, durationSelect.value)}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function calculateRate(price, duration) {
+        const nightlyRate = parseInt(price.replace(/[^0-9]/g, ''));
+        if (duration === 'weekly') {
+            return `¥${(nightlyRate * 7).toLocaleString()}/week`;
+        } else if (duration === 'monthly') {
+            return `¥${(nightlyRate * 30).toLocaleString()}/month`;
         }
+        return price;
+    }
+
+    function setupFilters() {
+        const filters = [durationSelect, locationSelect, typeSelect];
+        filters.forEach(filter => {
+            filter.addEventListener('change', () => {
+                const filteredProperties = properties.filter(property => {
+                    const locationMatch = !locationSelect.value || 
+                        property.location.toLowerCase().includes(locationSelect.value.toLowerCase());
+                    const typeMatch = !typeSelect.value || 
+                        property.type.toLowerCase().includes(typeSelect.value.toLowerCase());
+                    return locationMatch && typeMatch;
+                });
+                renderProperties(filteredProperties);
+            });
+        });
+    }
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.property-card, .feature-card').forEach(el => {
+        el.classList.add('fade-out');
+        observer.observe(el);
     });
 }); 

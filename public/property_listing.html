@@ -3,68 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J-Housing 雅 | Premium Tokyo Properties</title>
+    <title>J-Housing Exclusive Properties</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="logo">J-Housing 雅</div>
-        <div class="nav-links">
-            <a href="#" class="nav-link">Properties</a>
-            <a href="#" class="nav-link">Collections</a>
-            <a href="#" class="nav-link">Cultural Guide</a>
-            <a href="#" class="nav-link">Member Access</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <h1>J-Housing 雅</h1>
-        <p>Where Elegance Meets Luxury</p>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="logo">J-Housing</div>
+            <div class="nav-links">
+                <a href="#properties">Properties</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
     </header>
 
-    <main class="property-grid">
-        <!-- Property Card Template -->
-        <article class="property-card">
-            <div class="property-image">
-                <img src="/images/placeholder-1.jpg" alt="The Zen Garden Suite">
-                <div class="property-overlay">
-                    <span class="cultural-value">95</span>
-                    <span class="artistic-value">90</span>
-                </div>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Exclusive Luxury Properties in Tokyo</h1>
+                <p>Experience unparalleled luxury and cultural richness</p>
             </div>
-            <div class="property-info">
-                <h2>The Zen Garden Suite</h2>
-                <p class="location">Minato-ku, Tokyo</p>
-                <div class="features">
-                    <span>120m²</span>
-                    <span>Luxury Apartment</span>
-                </div>
-                <div class="price">¥450,000/night</div>
-                <button class="view-details">View Details</button>
-            </div>
-        </article>
+        </section>
 
-        <!-- Additional property cards would be dynamically generated -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-filters">
+                    <select id="duration">
+                        <option value="weekly">Weekly Rate</option>
+                        <option value="monthly">Monthly Rate</option>
+                    </select>
+                    <select id="location">
+                        <option value="">All Locations</option>
+                        <option value="minato">Minato-ku</option>
+                    </select>
+                    <select id="type">
+                        <option value="">All Types</option>
+                        <option value="apartment">Luxury Apartment</option>
+                        <option value="penthouse">Penthouse</option>
+                        <option value="mansion">Mansion</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="properties" id="properties">
+            <h2>Featured Properties</h2>
+            <div class="property-grid" id="propertyGrid">
+                <!-- Properties will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Exclusive Access</h3>
+                    <p>Hand-picked luxury properties in Tokyo's most prestigious locations</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Concierge Service</h3>
+                    <p>24/7 dedicated support and personalized assistance</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Cultural Experience</h3>
+                    <p>Immerse yourself in Japanese culture with our curated properties</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>J-Housing 雅</h3>
-                <p>Where Elegance Meets Luxury</p>
+                <h4>J-Housing</h4>
+                <p>Luxury Living in Tokyo</p>
             </div>
             <div class="footer-section">
-                <h3>Contact</h3>
-                <p>info@j-housing.jp</p>
+                <h4>Contact</h4>
+                <p>Email: contact@j-housing.jp</p>
+                <p>Phone: +81 3-XXXX-XXXX</p>
             </div>
             <div class="footer-section">
-                <h3>Follow</h3>
+                <h4>Follow Us</h4>
                 <div class="social-links">
                     <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
                 </div>
             </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 J-Housing. All rights reserved.</p>
         </div>
     </footer>
 
