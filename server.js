@@ -57,13 +57,13 @@ app.get('/health', (req, res) => {
 
 // Handle 404 errors
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'public', 'property_listing.html'));
+    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
 // Start server
