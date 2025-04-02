@@ -12,7 +12,33 @@ yarn-error.log
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Debug
+.debug/
+
+# Local development
+*.local 
