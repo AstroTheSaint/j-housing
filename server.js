@@ -13,10 +13,11 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
       fontSrc: ["'self'", "fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'", "'unsafe-inline'"]
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"]
     }
   }
 }));
@@ -51,22 +52,22 @@ app.get('/api/properties/:id', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'healthy' });
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
 });
 
 // Handle 404 errors
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+    res.sendFile(path.join(__dirname, 'public', 'property_listing.html'));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).sendFile(path.join(__dirname, 'public', '404.html'));
+    res.sendFile(path.join(__dirname, 'public', 'property_listing.html'));
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 }); 
