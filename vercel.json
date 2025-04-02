@@ -16,6 +16,10 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "public/property_listing.html"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "server.js",
       "headers": {
