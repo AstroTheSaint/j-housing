@@ -68,9 +68,11 @@ function handlePropertyClick(event) {
 document.addEventListener('DOMContentLoaded', () => {
     let properties = [];
     const propertyGrid = document.getElementById('propertyGrid');
-    const durationSelect = document.getElementById('duration');
-    const locationSelect = document.getElementById('location');
+    const wardSelect = document.getElementById('ward');
     const typeSelect = document.getElementById('type');
+    const durationSelect = document.getElementById('duration');
+    const sortSelect = document.getElementById('sort');
+    const wardCards = document.querySelectorAll('.ward-card');
 
     // Fetch properties data
     fetch('/properties_data.json')
@@ -79,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             properties = data.properties;
             renderProperties(properties);
             setupFilters();
+            setupWardCards();
         })
         .catch(error => console.error('Error loading properties:', error));
 
@@ -87,16 +90,27 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="property-card">
                 <div class="property-image">
                     <img src="${property.image}" alt="${property.name}">
+                    <div class="property-overlay"></div>
+                    <div class="property-ratings">
+                        <span class="rating cultural-rating">
+                            Cultural: ${property.culturalValue}
+                        </span>
+                        <span class="rating artistic-rating">
+                            Artistic: ${property.artisticValue}
+                        </span>
+                    </div>
                 </div>
                 <div class="property-info">
                     <h3>${property.name}</h3>
                     <p class="property-location">${property.location}</p>
                     <div class="property-features">
-                        <span>${property.size}</span>
-                        <span>${property.type}</span>
+                        <span class="feature-tag">${property.size}</span>
+                        <span class="feature-tag">${property.type}</span>
                     </div>
                     <div class="property-features">
-                        ${property.features.map(feature => `<span>${feature}</span>`).join('')}
+                        ${property.features.map(feature => 
+                            `<span class="feature-tag">${feature}</span>`
+                        ).join('')}
                     </div>
                     <p class="property-price">${calculateRate(property.price, durationSelect.value)}</p>
                 </div>
@@ -115,18 +129,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupFilters() {
-        const filters = [durationSelect, locationSelect, typeSelect];
+        const filters = [wardSelect, typeSelect, durationSelect, sortSelect];
         filters.forEach(filter => {
             filter.addEventListener('change', () => {
-                const filteredProperties = properties.filter(property => {
-                    const locationMatch = !locationSelect.value || 
-                        property.location.toLowerCase().includes(locationSelect.value.toLowerCase());
+                let filteredProperties = properties.filter(property => {
+                    const wardMatch = !wardSelect.value || 
+                        property.ward === wardSelect.value;
                     const typeMatch = !typeSelect.value || 
-                        property.type.toLowerCase().includes(typeSelect.value.toLowerCase());
-                    return locationMatch && typeMatch;
+                        property.type === typeSelect.value;
+                    return wardMatch && typeMatch;
                 });
+
+                // Sort properties
+                filteredProperties = sortProperties(filteredProperties, sortSelect.value);
                 renderProperties(filteredProperties);
             });
+        });
+    }
+
+    function setupWardCards() {
+        wardCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const ward = card.dataset.ward;
+                wardSelect.value = ward;
+                const filteredProperties = properties.filter(property => 
+                    property.ward === ward
+                );
+                renderProperties(filteredProperties);
+                document.getElementById('properties').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+    }
+
+    function sortProperties(properties, sortType) {
+        return [...properties].sort((a, b) => {
+            switch (sortType) {
+                case 'price-asc':
+                    return parseInt(a.price.replace(/[^0-9]/g, '')) - 
+                           parseInt(b.price.replace(/[^0-9]/g, ''));
+                case 'price-desc':
+                    return parseInt(b.price.replace(/[^0-9]/g, '')) - 
+                           parseInt(a.price.replace(/[^0-9]/g, ''));
+                case 'size-asc':
+                    return parseInt(a.size) - parseInt(b.size);
+                case 'size-desc':
+                    return parseInt(b.size) - parseInt(a.size);
+                default:
+                    return 0;
+            }
         });
     }
 
@@ -155,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.1
     });
 
-    document.querySelectorAll('.property-card, .feature-card').forEach(el => {
+    document.querySelectorAll('.property-card, .feature-card, .ward-card').forEach(el => {
         el.classList.add('fade-out');
         observer.observe(el);
     });

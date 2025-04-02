@@ -15,7 +15,7 @@
             <div class="logo">J-Housing</div>
             <div class="nav-links">
                 <a href="#properties">Properties</a>
-                <a href="#about">About</a>
+                <a href="#wards">Tokyo Wards</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
@@ -32,20 +32,54 @@
         <section class="search-section">
             <div class="search-container">
                 <div class="search-filters">
-                    <select id="duration">
-                        <option value="weekly">Weekly Rate</option>
-                        <option value="monthly">Monthly Rate</option>
-                    </select>
-                    <select id="location">
-                        <option value="">All Locations</option>
-                        <option value="minato">Minato-ku</option>
+                    <select id="ward">
+                        <option value="">All Wards</option>
+                        <option value="Minato-ku">Minato-ku</option>
+                        <option value="Shibuya-ku">Shibuya-ku</option>
+                        <option value="Shinjuku-ku">Shinjuku-ku</option>
+                        <option value="Meguro-ku">Meguro-ku</option>
                     </select>
                     <select id="type">
                         <option value="">All Types</option>
-                        <option value="apartment">Luxury Apartment</option>
-                        <option value="penthouse">Penthouse</option>
-                        <option value="mansion">Mansion</option>
+                        <option value="Luxury Apartment">Luxury Apartment</option>
+                        <option value="Penthouse">Penthouse</option>
+                        <option value="Traditional House">Traditional House</option>
+                        <option value="Designer Loft">Designer Loft</option>
+                        <option value="Modern Villa">Modern Villa</option>
                     </select>
+                    <select id="duration">
+                        <option value="nightly">Nightly Rate</option>
+                        <option value="weekly">Weekly Rate</option>
+                        <option value="monthly">Monthly Rate</option>
+                    </select>
+                    <select id="sort">
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="size-asc">Size: Small to Large</option>
+                        <option value="size-desc">Size: Large to Small</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section id="wards" class="wards-section">
+            <h2>Explore Tokyo Wards</h2>
+            <div class="wards-grid">
+                <div class="ward-card" data-ward="Minato-ku">
+                    <h3>Minato-ku</h3>
+                    <p>Luxury properties in Tokyo's most prestigious district</p>
+                </div>
+                <div class="ward-card" data-ward="Shibuya-ku">
+                    <h3>Shibuya-ku</h3>
+                    <p>Modern living in Tokyo's fashion and culture center</p>
+                </div>
+                <div class="ward-card" data-ward="Shinjuku-ku">
+                    <h3>Shinjuku-ku</h3>
+                    <p>Urban sophistication in Tokyo's business heart</p>
+                </div>
+                <div class="ward-card" data-ward="Meguro-ku">
+                    <h3>Meguro-ku</h3>
+                    <p>Artistic charm along the Meguro River</p>
                 </div>
             </div>
         </section>
@@ -60,16 +94,16 @@
         <section class="features">
             <div class="features-grid">
                 <div class="feature-card">
-                    <h3>Exclusive Access</h3>
-                    <p>Hand-picked luxury properties in Tokyo's most prestigious locations</p>
+                    <h3>Cultural Value</h3>
+                    <p>Properties rated for their cultural significance and authenticity</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Concierge Service</h3>
-                    <p>24/7 dedicated support and personalized assistance</p>
+                    <h3>Artistic Merit</h3>
+                    <p>Spaces curated for their artistic and aesthetic excellence</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Cultural Experience</h3>
-                    <p>Immerse yourself in Japanese culture with our curated properties</p>
+                    <h3>Location</h3>
+                    <p>Prime locations in Tokyo's most sought-after districts</p>
                 </div>
             </div>
         </section>
