@@ -662,4 +662,151 @@ footer {
     .ward-card {
         aspect-ratio: 16/9;
     }
+}
+
+/* Featured Properties Carousel */
+.featured-carousel {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 2rem 1rem;
+    position: relative;
+}
+
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    margin: 0 40px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    max-width: calc(33.333% - 2rem);
+    margin: 0 1rem;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-color);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    font-size: 1.5rem;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-button:hover {
+    background-color: var(--primary-color);
+}
+
+.carousel-button.prev {
+    left: 0;
+}
+
+.carousel-button.next {
+    right: 0;
+}
+
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.carousel-indicators {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-indicator.active {
+    background: var(--accent-color);
+}
+
+/* Expandable Property Cards */
+.property-card {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.property-card.expanded {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.property-card.expanded .property-image {
+    height: 400px;
+}
+
+.property-card .expand-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.property-card.expanded .expand-content {
+    max-height: 1000px;
+}
+
+.expand-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.expand-button:hover {
+    background-color: var(--primary-color);
+}
+
+@media (max-width: 1024px) {
+    .carousel-slide {
+        max-width: calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-slide {
+        max-width: calc(100% - 2rem);
+    }
+
+    .property-card.expanded {
+        grid-template-columns: 1fr;
+    }
 } 

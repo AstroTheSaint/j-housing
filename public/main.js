@@ -68,6 +68,7 @@ function handlePropertyClick(event) {
 document.addEventListener('DOMContentLoaded', () => {
     let properties = [];
     const propertyGrid = document.getElementById('propertyGrid');
+    const featuredCarousel = document.getElementById('featuredCarousel');
     const wardSelect = document.getElementById('ward');
     const typeSelect = document.getElementById('type');
     const durationSelect = document.getElementById('duration');
@@ -82,12 +83,101 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             properties = data.properties;
+            initializeFeaturedCarousel(properties.slice(0, 6)); // Show first 6 properties in carousel
             renderProperties(properties);
             setupFilters();
             setupWardCards();
             updateWardCounts();
         })
         .catch(error => console.error('Error loading properties:', error));
+
+    function initializeFeaturedCarousel(featuredProperties) {
+        // Create carousel slides
+        const slides = featuredProperties.map((property, index) => `
+            <div class="carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}">
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="${property.image}" alt="${property.name}">
+                        <div class="property-overlay"></div>
+                        <div class="property-ratings">
+                            <span class="rating cultural-rating">
+                                Cultural: ${property.culturalValue}
+                            </span>
+                            <span class="rating artistic-rating">
+                                Artistic: ${property.artisticValue}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <h3>${property.name}</h3>
+                        <p class="property-location">${property.location}</p>
+                        <p class="property-price">${property.price}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        featuredCarousel.innerHTML = slides;
+
+        // Create indicators
+        const indicators = document.createElement('div');
+        indicators.className = 'carousel-indicators';
+        for (let i = 0; i < featuredProperties.length; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = `carousel-indicator ${i === 0 ? 'active' : ''}`;
+            indicator.dataset.index = i;
+            indicators.appendChild(indicator);
+        }
+        document.querySelector('.carousel-nav').appendChild(indicators);
+
+        // Setup carousel controls
+        let currentSlide = 0;
+        const slideWidth = document.querySelector('.carousel-slide').offsetWidth;
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const nextButton = document.querySelector('.carousel-button.next');
+
+        function updateCarousel() {
+            const offset = -currentSlide * slideWidth;
+            featuredCarousel.style.transform = `translateX(${offset}px)`;
+            
+            // Update indicators
+            document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+
+            // Update slide opacity
+            document.querySelectorAll('.carousel-slide').forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + featuredProperties.length) % featuredProperties.length;
+            updateCarousel();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % featuredProperties.length;
+            updateCarousel();
+        });
+
+        // Add touch support
+        const hammer = new Hammer(featuredCarousel);
+        hammer.on('swipeleft', () => {
+            currentSlide = (currentSlide + 1) % featuredProperties.length;
+            updateCarousel();
+        });
+        hammer.on('swiperight', () => {
+            currentSlide = (currentSlide - 1 + featuredProperties.length) % featuredProperties.length;
+            updateCarousel();
+        });
+
+        // Auto advance carousel
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % featuredProperties.length;
+            updateCarousel();
+        }, 5000);
+    }
 
     function renderProperties(properties) {
         propertyGrid.innerHTML = properties.map(property => `
@@ -111,22 +201,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="feature-tag">${property.size}</span>
                         <span class="feature-tag">${property.type}</span>
                     </div>
-                    <div class="property-features">
-                        ${property.features.map(feature => 
-                            `<span class="feature-tag">${feature}</span>`
-                        ).join('')}
-                    </div>
                     <p class="property-price">${calculateRate(property.price, durationSelect.value)}</p>
+                    <button class="expand-button">View Details</button>
+                </div>
+                <div class="expand-content">
+                    <div class="property-details">
+                        <h4>Features</h4>
+                        <div class="property-features">
+                            ${property.features.map(feature => 
+                                `<span class="feature-tag">${feature}</span>`
+                            ).join('')}
+                        </div>
+                        <h4>Pricing</h4>
+                        <p>Nightly: ${property.price}</p>
+                        <p>Weekly: ${calculateRate(property.price, 'weekly')}</p>
+                        <p>Monthly: ${calculateRate(property.price, 'monthly')}</p>
+                    </div>
                 </div>
             </div>
         `).join('');
 
-        // Add click handlers to property cards
+        // Add expand functionality to property cards
         document.querySelectorAll('.property-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const propertyId = card.dataset.id;
-                const property = properties.find(p => p.id === propertyId);
-                showPropertyDetails(property);
+            const expandButton = card.querySelector('.expand-button');
+            expandButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                card.classList.toggle('expanded');
+                expandButton.textContent = card.classList.contains('expanded') ? 'Close' : 'View Details';
             });
         });
     }

@@ -29,6 +29,23 @@
             </div>
         </section>
 
+        <!-- Featured Properties Carousel -->
+        <section class="featured-carousel">
+            <h2>Featured Properties</h2>
+            <div class="carousel-container">
+                <button class="carousel-button prev" aria-label="Previous">&lt;</button>
+                <div class="carousel-track-container">
+                    <div class="carousel-track" id="featuredCarousel">
+                        <!-- Carousel items will be dynamically inserted here -->
+                    </div>
+                </div>
+                <button class="carousel-button next" aria-label="Next">&gt;</button>
+            </div>
+            <div class="carousel-nav">
+                <div class="carousel-indicators"></div>
+            </div>
+        </section>
+
         <div id="propertyModal" class="modal">
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
@@ -100,7 +117,7 @@
         </section>
 
         <section class="properties" id="properties">
-            <h2>Featured Properties</h2>
+            <h2>All Properties</h2>
             <div class="property-grid" id="propertyGrid">
                 <!-- Properties will be dynamically inserted here -->
             </div>
@@ -148,6 +165,7 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html> 
