@@ -17,7 +17,7 @@ const propertiesData = JSON.parse(fs.readFileSync('properties_data.json', 'utf8'
 
 // Routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'property_listing.html'));
+    res.sendFile(path.join(__dirname, 'public', 'property_listing.html'));
 });
 
 app.get('/api/properties', (req, res) => {
@@ -25,11 +25,16 @@ app.get('/api/properties', (req, res) => {
 });
 
 app.get('/api/properties/:id', (req, res) => {
-    const property = propertiesData.find(p => p.id === req.params.id);
+    const property = propertiesData.properties.find(p => p.id === req.params.id);
     if (!property) {
         return res.status(404).json({ error: 'Property not found' });
     }
     res.json(property);
+});
+
+// Handle 404 errors
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'public', 'property_listing.html'));
 });
 
 // Start server
