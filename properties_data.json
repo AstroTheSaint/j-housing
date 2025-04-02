@@ -1,0 +1,43 @@
+{
+  "properties": [
+    {
+      "id": "1",
+      "name": "The Zen Garden Suite",
+      "location": "Minato-ku, Tokyo",
+      "type": "Luxury Apartment",
+      "size": "120m²",
+      "price": "¥450,000/night",
+      "image": "/images/placeholder-1.svg",
+      "culturalValue": 95,
+      "artisticValue": 90,
+      "features": ["Zen Garden", "Tatami Room", "Modern Kitchen"],
+      "description": "A harmonious blend of traditional Japanese aesthetics and modern luxury."
+    },
+    {
+      "id": "2",
+      "name": "The Roppongi Heights",
+      "location": "Minato-ku, Tokyo",
+      "type": "Penthouse",
+      "size": "180m²",
+      "price": "¥650,000/night",
+      "image": "/images/placeholder-2.svg",
+      "culturalValue": 85,
+      "artisticValue": 95,
+      "features": ["City View", "Private Terrace", "Wine Cellar"],
+      "description": "Stunning views of Tokyo's skyline from this luxurious penthouse."
+    },
+    {
+      "id": "3",
+      "name": "The Diplomat's Residence",
+      "location": "Minato-ku, Tokyo",
+      "type": "Mansion",
+      "size": "300m²",
+      "price": "¥950,000/night",
+      "image": "/images/placeholder-3.svg",
+      "culturalValue": 90,
+      "artisticValue": 85,
+      "features": ["Private Garden", "Security System", "Staff Quarters"],
+      "description": "A prestigious residence with historical significance."
+    }
+  ]
+} 
